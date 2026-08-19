@@ -7,25 +7,35 @@
     <style>
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-            background: #fdf5f6; 
+            
+            /* Sfondo acquerello: coordinato con la pagina principale */
+            background-color: #fcfbfa;
+            background-image: 
+              radial-gradient(circle at 0% 0%, rgba(160, 141, 195, 0.35) 0%, transparent 60%),
+              radial-gradient(circle at 100% 100%, rgba(232, 174, 33, 0.3) 0%, transparent 65%),
+              radial-gradient(circle at 100% 0%, rgba(232, 174, 33, 0.15) 0%, transparent 50%),
+              radial-gradient(circle at 0% 100%, rgba(160, 141, 195, 0.2) 0%, transparent 55%);
+            background-attachment: fixed;
+            
             text-align: center; 
             padding: 20px; 
-            color: #333; 
+            color: #3f3938; /* Grigio-marrone scuro elegante del testo */
         }
-        h1 { color: #d63384; margin-bottom: 20px; }
+        h1 { color: #a08dc3; margin-bottom: 20px; text-shadow: 1px 1px 2px rgba(0,0,0,0.05); } /* Lilla */
         .game-box { 
-            background: white; 
+            background: rgba(255, 255, 255, 0.9); /* Sfondo leggermente trasparente per far intravedere l'acquerello */
             padding: 20px; 
             margin: 20px auto; 
             border-radius: 15px; 
             max-width: 350px; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
+            box-shadow: 0 4px 15px rgba(160, 141, 195, 0.15); /* Ombra color glicine */
+            border: 1px solid #f0ebe9;
         }
-        h2 { font-size: 1.2rem; margin-bottom: 15px; color: #555; }
-        
+        h2 { font-size: 1.2rem; margin-bottom: 15px; color: #69605e; } /* Testo più chiaro */
+
         /* Bottoni Reset */
         .btn-reset { 
-            background: #d63384; 
+            background: #a08dc3; /* Lilla */
             color: white; 
             border: none; 
             padding: 10px 20px; 
@@ -33,44 +43,57 @@
             cursor: pointer; 
             font-weight: bold; 
             margin-top: 15px; 
-            transition: 0.2s;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(160, 141, 195, 0.4);
         }
-        .btn-reset:hover { background: #b02a6c; }
+        .btn-reset:hover { 
+            background: #8b76af; 
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(160, 141, 195, 0.6);
+        }
 
         /* Stili Tris */
         .board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; max-width: 180px; margin: 0 auto; }
         .cell { 
             width: 60px; height: 60px; 
-            background: #f8f9fa; 
-            border: 2px solid #e9ecef; 
+            background: #fdfcfa; 
+            border: 2px solid #e0dcd9; 
             border-radius: 8px; 
             font-size: 35px; 
             display: flex; align-items: center; justify-content: center; 
             cursor: pointer; font-weight: bold; 
+            transition: background-color 0.2s;
         }
-        
+        .cell:hover { background: #f4efeb; }
+
         /* Stili Memory */
         .memory-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; max-width: 280px; margin: 0 auto; }
         .card { 
             width: 60px; height: 60px; 
-            background: #d63384; 
+            background: #e8ae21; /* Giallo Senape */
             border-radius: 8px; 
             display: flex; align-items: center; justify-content: center; 
             font-size: 30px; 
             cursor: pointer; 
             color: transparent; /* Nasconde l'emoji finché non viene cliccata */
             user-select: none;
+            transition: transform 0.2s;
+            box-shadow: 0 2px 6px rgba(232, 174, 33, 0.3);
         }
+        .card:active { transform: scale(0.95); }
         .card.flipped { 
-            background: #f8f9fa; 
-            border: 2px solid #d63384; 
+            background: #fdfcfa; 
+            border: 2px solid #e8ae21; 
             color: #000; 
+            box-shadow: none;
         }
         .card.matched { 
-            background: #d4edda; 
-            border-color: #28a745; 
+            background: #fcfbfa; 
+            border: 2px solid #a08dc3; /* Bordo lilla quando trovata */
             color: #000; 
             cursor: default; 
+            box-shadow: none;
+            opacity: 0.8;
         }
 
         .back-link { 
@@ -78,11 +101,17 @@
             margin-top: 20px; 
             text-decoration: none; 
             font-weight: bold; 
-            color: #555; 
-            border: 1px solid #ddd; 
+            color: #3f3938; 
+            border: 1px solid #e0dcd9; 
             padding: 12px 25px; 
             border-radius: 30px; 
-            background: white; 
+            background: rgba(255, 255, 255, 0.8); 
+            transition: all 0.2s ease;
+        }
+        .back-link:hover {
+            background: white;
+            box-shadow: 0 4px 12px rgba(160, 141, 195, 0.2);
+            border-color: #d1c8e1;
         }
     </style>
 </head>
@@ -103,7 +132,7 @@
             <div class="cell" onclick="move(7)"></div>
             <div class="cell" onclick="move(8)"></div>
         </div>
-        <p id="tris-msg" style="height: 20px; margin-top: 15px; font-weight: bold; color: #d63384;"></p>
+        <p id="tris-msg" style="height: 20px; margin-top: 15px; font-weight: bold; color: #a08dc3;"></p>
         <button class="btn-reset" onclick="resetTris()">Ricomincia Partita</button>
     </div>
 
@@ -138,7 +167,7 @@
             board[index] = currentPlayer;
             cells[index].innerText = currentPlayer;
             // X è rosa, O è azzurro
-            cells[index].style.color = currentPlayer === "X" ? "#d63384" : "#0ea5e9";
+            cells[index].style.color = currentPlayer === "X" ? "#e8ae21" : "#a08dc3";
 
             checkWin();
         }
